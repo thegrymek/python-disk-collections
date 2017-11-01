@@ -44,7 +44,6 @@ There are available more ways to serialize items.
     {u'a': 1, u'b': 2, u'c': 3}
 
 
-
 Installation
 ------------
 
@@ -56,7 +55,7 @@ To install package type
 
 
 How it works
-============
+------------
 
 In order to implement your serializer create class with methods:
 **dumps** and **loads** or import interface.
@@ -95,9 +94,15 @@ When list is removed by garbage collector, all items that was stored are lost.
 
 
 Contribute
-==========
+----------
 
-#. Fork `the repository`_ on GitHub to start making your changes to the **master** branch (or branch off of it).
+#. Fork `repository https://github.com/thegrymek/python-disk-collections.git`_ on GitHub to start making your changes to the **master** branch (or branch off of it).
 #. Write tests that prove that bug or future works as expected
 #. Check your code and tests with **tox**
 #. Send a pull request!
+
+
+License
+-------
+
+Python-Disk-Collection is under MIT license, see LICENSE for more details.

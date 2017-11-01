@@ -8,22 +8,13 @@ python:
   - "3.5"
   - "3.6"
 
-matrix:
-  include:
-    - python: 2.7
-      env: TOXENV=py27
-    - python: 3.4
-      env: TOXENV=py34
-    - python: 3.5
-      env: TOXENV=py35
-    - python: 3.6
-      env: TOXENV=py36
-
 install:
-  - pip install tox-travis
+  - travis_retry pip install --upgrade pip
+  - travis_retry pip install coveralls
+  - travis_retry pip install flake8 tox pytest
 
 script:
-  - ./.travis/run tox
+ - tox -e $(echo py$TRAVIS_PYTHON_VERSION | tr -d .')
 
 after_success:
   - coveralls
