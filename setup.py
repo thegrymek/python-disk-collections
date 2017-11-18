@@ -21,8 +21,8 @@ setup(
     version=version,
     author='thegrymek',
     author_email='andrzej.grymkowski@gmail.com',
-    description='Package provides class FileList that behaves like bulltin '
-                'list but keeps your items at disk.',
+    description='Package provides classes: FileList, FileDeque that behaves '
+                'like bulltins but keeps items at disk.',
     long_description=readme,
     packages=find_packages(),
     tests_require=['pytest', 'tox', 'flake8'],
@@ -30,7 +30,8 @@ setup(
     download_url=url(url_profile, package_name, 'archive/%s.tar.gz' % version),
     license='MIT',
     zip_safe=False,
-    keywords=['pickle', 'cache', 'collections', 'list', 'json', 'zlib'],
+    keywords=['pickle', 'cache', 'collections', 'list', 'deque', 'json',
+              'zlib'],
     classifiers=[
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2.7',

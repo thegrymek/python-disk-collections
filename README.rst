@@ -22,7 +22,10 @@ Module contains class with extended python list that stores items at disk.
 By default items before save are pickled and compressed. Use that list
 as usual list!
 
-Intend of package was to create generic list that stores really big list of items
+In addition, there is implemented extended python deque with disk storage and
+same behaviour as **collections.deque**.
+
+Intend of package was to create generic iterables that stores really big collection of items
 that does not fit in memory and to avoid usage of external cache and local database
 storages.
 
@@ -41,12 +44,27 @@ storages.
     >>> my_list = list(flist)  # now its simple list
 
 
+.. code-block:: python
+
+    >>> from diskcollections.iterables import FileQueue
+    >>> fdeque = FileQueue()
+    >>> fdeque.extend([1, 2, 3])
+    >>> fdeque.append(4)
+    >>> fdeque
+    FileDeque([1, 2, 3, 4])
+    >>> fdeque.pop()
+    4
+    >>> fdeque.appendleft(0)
+    >>> fdeque.popleft()
+    0
+
+
 There are available more ways to serialize items.
 
 
 .. code-block:: python
 
-    >>> from diskcollections.iterables import FileList
+    >>> from diskcollections.iterables import FileList, FileDeque
     >>> from diskcollections.handlers import (
         PickleHandler,  # pickle items
         PickleZLibHandler,  # pickle + compress items
@@ -108,6 +126,12 @@ Under the hood, **FileList** for storage items uses *tempfile.mktemp* (in python
 or *tempfile.TemporaryDirectory* (in python3). It means, that every list
 has own unique directory, placed likely in */tmp/*.
 When list is removed by garbage collector, all items that was stored are lost.
+
+For **FileDeque** stores items in the same way as **FileList**.
+Difference between them is that **FileList** implements: *insert*, slicing, indexing.
+Because of overlaping indexes of **FileList** while using *insert*, **FileList** stores
+own alphabet to index new and inserted items.
+**FileDeque** doesn't have indexing so it doesn't take any memory.
 
 
 Contribute
