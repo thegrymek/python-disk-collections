@@ -25,8 +25,10 @@ class TemporaryFileClient(IClient):
     def __del__(self):
         self.__directory.cleanup()
 
-    def __get_file_path(self, key):
+    def __get_file_path(self, key, SSD=False):
         directory_path = self.__directory.name
+        if SSD == True:
+            directory_path = os.environ['SSD']
         file_path = os.path.join(directory_path, key)
         return file_path
 
