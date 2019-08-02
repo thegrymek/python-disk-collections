@@ -7,6 +7,7 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
+  - "3.7"
 
 install:
   - travis_retry pip install --upgrade pip
@@ -14,7 +15,7 @@ install:
   - travis_retry pip install flake8 tox pytest
 
 script:
- - tox -e $(echo py$TRAVIS_PYTHON_VERSION | tr -d .)
+  - tox -e $(echo py$TRAVIS_PYTHON_VERSION | tr -d .)
 
 after_success:
   - coveralls
