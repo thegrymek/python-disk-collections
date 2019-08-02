@@ -3,7 +3,7 @@ import collections
 from diskcollections import (
     clients,
     generators,
-    handlers,
+    serializers,
 )
 from diskcollections.py2to3 import izip
 
@@ -14,13 +14,13 @@ class FileList(collections.MutableSequence):
         self,
         iterable=None,
         client_class=clients.TemporaryFileClient,
-        handler_class=handlers.PickleZLibHandler,
+        serializer_class=serializers.PickleZLibSerializer,
         generator=generators.StringGenerator
     ):
         super(FileList, self).__init__()
         self.__storage = []
         self.__client = client_class()
-        self.__handler = handler_class
+        self.__serializer = serializer_class
         self.__generator = generator
 
         iterable = iterable or []
@@ -58,11 +58,11 @@ class FileList(collections.MutableSequence):
             )
         key = self.__storage[index]
         encoded_value = self.__client.get(key)
-        return self.__handler.loads(encoded_value)
+        return self.__serializer.loads(encoded_value)
 
     def __setitem__(self, index, value):
         key = self.__storage[index]
-        encoded_value = self.__handler.dumps(value)
+        encoded_value = self.__serializer.dumps(value)
         self.__client.set(key, encoded_value)
 
     def __len__(self):
@@ -87,10 +87,10 @@ class FileDeque:
         iterable=(),
         maxlen=None,
         client_class=clients.TemporaryFileClient,
-        handler_class=handlers.PickleZLibHandler,
+        serializer_class=serializers.PickleZLibSerializer,
     ):
         self.__client = client_class()
-        self.__handler = handler_class
+        self.__serializer = serializer_class
         self.__left_index = 0
         self.__right_index = 0
         self.__length = 0
@@ -119,7 +119,7 @@ class FileDeque:
             self,
             maxlen=self.__max_length,
             client_class=self.__client.__class__,
-            handler_class=self.__handler,
+            serializer_class=self.__serializer,
         )
 
     def __eq__(self, other):
@@ -182,10 +182,10 @@ class FileDeque:
 
     def __get(self, idx):
         encoded_value = self.__client.get(str(idx))
-        return self.__handler.loads(encoded_value)
+        return self.__serializer.loads(encoded_value)
 
     def __set(self, idx, value):
-        encoded_value = self.__handler.dumps(value)
+        encoded_value = self.__serializer.dumps(value)
         self.__client.set(str(idx), encoded_value)
 
     def __delete(self, idx):

@@ -2,15 +2,15 @@ import json
 import pickle
 import zlib
 
-from diskcollections.interfaces import IHandler
+from diskcollections.interfaces import ISerializer
 
 
-class PickleHandler(IHandler):
+class PickleSerializer(ISerializer):
     dumps = staticmethod(pickle.dumps)
     loads = staticmethod(pickle.loads)
 
 
-class PickleZLibHandler(IHandler):
+class PickleZLibSerializer(ISerializer):
 
     @staticmethod
     def dumps(
@@ -29,12 +29,12 @@ class PickleZLibHandler(IHandler):
         return obj
 
 
-class JsonHandler(IHandler):
+class JsonSerializer(ISerializer):
     dumps = staticmethod(json.dumps)
     loads = staticmethod(json.loads)
 
 
-class JsonZLibHandler(IHandler):
+class JsonZLibSerializer(ISerializer):
 
     @staticmethod
     def dumps(obj, level=zlib.Z_DEFAULT_COMPRESSION):

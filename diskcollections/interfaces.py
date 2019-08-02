@@ -1,11 +1,11 @@
-class IHandler:
+class ISerializer:
 
     @staticmethod
     def dumps(obj):
-        """Converts object to string.
+        """Converts object to serialized format.
 
         :param obj: any python object
-        :return: dumped string
+        :return: serialized object
         """
         raise NotImplementedError
 
@@ -13,8 +13,8 @@ class IHandler:
     def loads(obj):
         """Restored dumped string into python object.
 
-        :param obj: Object stored as string
-        :return: python object restored from dump
+        :param obj: Serialized object
+        :return: restored python object
         """
         raise NotImplementedError
 
