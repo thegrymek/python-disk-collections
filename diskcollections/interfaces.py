@@ -1,3 +1,6 @@
+import collections
+
+
 class ISerializer:
 
     @staticmethod
@@ -19,14 +22,13 @@ class ISerializer:
         raise NotImplementedError
 
 
-class IClient:
-    """Abstract client to get, set, delete items."""
+class IClientSequence(collections.MutableSequence):
+    """Abstract client to manage items in sequence.
 
-    def set(self, key, content):
-        raise NotImplementedError
-
-    def get(self, key):
-        raise NotImplementedError
-
-    def delete(self, key):
-        raise NotImplementedError
+    Inheritance class has to implement following methods:
+    * `__getitem__(index)`
+    * `__setitem__(index, value)`
+    * `__delitem__(index)`
+    * ` __len__()`
+    * `insert(item)`
+    """

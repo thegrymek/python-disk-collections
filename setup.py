@@ -15,7 +15,7 @@ with open('README.rst', 'r') as f:
 
 package_name = 'python-disk-collections'
 url_profile = 'https://github.com/thegrymek'
-version = '0.0.2'
+version = '0.0.3'
 setup(
     name=package_name,
     version=version,
@@ -31,7 +31,7 @@ setup(
     license='MIT',
     zip_safe=False,
     keywords=['pickle', 'cache', 'collections', 'list', 'deque', 'json',
-              'zlib'],
+              'zlib', 'disk'],
     classifiers=[
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2.7',

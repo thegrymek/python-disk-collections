@@ -46,8 +46,8 @@ storages.
 
 .. code-block:: python
 
-    >>> from diskcollections.iterables import FileQueue
-    >>> fdeque = FileQueue()
+    >>> from diskcollections.iterables import FileDeque
+    >>> fdeque = FileDeque()
     >>> fdeque.extend([1, 2, 3])
     >>> fdeque.append(4)
     >>> fdeque
@@ -65,14 +65,14 @@ There are available more ways to serialize items.
 .. code-block:: python
 
     >>> from diskcollections.iterables import FileList, FileDeque
-    >>> from diskcollections.handlers import (
-        PickleHandler,  # pickle items
-        PickleZLibHandler,  # pickle + compress items
-        JsonHandler, # convert to json items
-        JsonZLibHandler  # convert to json + compress items
+    >>> from diskcollections.serializers import (
+        PickleSerializer,  # pickle items
+        PickleZLibSerializer,  # pickle + compress items
+        JsonSerializer, # convert to json items
+        JsonZLibSerializer  # convert to json + compress items
     )
     >>> from functools import partial
-    >>> JsonFileList = partial(FileList, handler_class=JsonHandler)
+    >>> JsonFileList = partial(FileList, serializer_class=JsonHandler)
     >>> flist = JsonFileList()
     >>> flist.append({'a': 1, 'b': 2, 'c': 3})
     >>> flist[0]
@@ -98,9 +98,9 @@ In order to implement your serializer create class with methods:
 
 .. code-block:: python
 
-    >>> from diskcollections.interfaces import IHandler
+    >>> from diskcollections.interfaces import ISerializer
 
-    class IHandler:
+    class ISerializer:
 
     @staticmethod
     def dumps(obj):
@@ -120,7 +120,7 @@ In order to implement your serializer create class with methods:
         """
         raise NotImplementedError
 
-All handlers from example above implements interface **IHandler**.
+All serializers from example above implements interface **ISerializer**.
 
 Under the hood, **FileList** for storage items uses *tempfile.mktemp* (in python2)
 or *tempfile.TemporaryDirectory* (in python3). It means, that every list
@@ -128,10 +128,6 @@ has own unique directory, placed likely in */tmp/*.
 When list is removed by garbage collector, all items that was stored are lost.
 
 For **FileDeque** stores items in the same way as **FileList**.
-Difference between them is that **FileList** implements: *insert*, slicing, indexing.
-Because of overlaping indexes of **FileList** while using *insert*, **FileList** stores
-own alphabet to index new and inserted items.
-**FileDeque** doesn't have indexing so it doesn't take any memory.
 
 
 Contribute

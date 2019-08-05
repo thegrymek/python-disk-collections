@@ -1,11 +1,8 @@
 import collections
 
-from diskcollections import (
-    clients,
-    generators,
-    serializers,
-)
+from diskcollections import serializers
 from diskcollections.py2to3 import izip
+from diskcollections.iterables import clients
 
 
 class FileList(collections.MutableSequence):
@@ -13,15 +10,12 @@ class FileList(collections.MutableSequence):
     def __init__(
         self,
         iterable=None,
-        client_class=clients.TemporaryFileClient,
-        serializer_class=serializers.PickleZLibSerializer,
-        generator=generators.StringGenerator
+        client_class=clients.TemporaryDirectoryClient,
+        serializer_class=serializers.PickleZLibSerializer
     ):
         super(FileList, self).__init__()
-        self.__storage = []
         self.__client = client_class()
         self.__serializer = serializer_class
-        self.__generator = generator
 
         iterable = iterable or []
         self.extend(iterable)
@@ -34,7 +28,7 @@ class FileList(collections.MutableSequence):
         return '[%s]' % s
 
     def __eq__(self, other):
-        total_items = len(self.__storage)
+        total_items = len(self.__client)
         if total_items != len(other):
             return False
 
@@ -44,9 +38,7 @@ class FileList(collections.MutableSequence):
         return True
 
     def __delitem__(self, index):
-        key = self.__storage[index]
-        del self.__storage[index]
-        self.__client.delete(key)
+        del self.__client[index]
 
     def __getitem__(self, index):
         if isinstance(index, slice):
@@ -56,44 +48,35 @@ class FileList(collections.MutableSequence):
                 self[i]
                 for i in range(start, stop, step)
             )
-        key = self.__storage[index]
-        encoded_value = self.__client.get(key)
+        encoded_value = self.__client[index]
         return self.__serializer.loads(encoded_value)
 
     def __setitem__(self, index, value):
-        key = self.__storage[index]
         encoded_value = self.__serializer.dumps(value)
-        self.__client.set(key, encoded_value)
+        self.__client[index] = encoded_value
 
     def __len__(self):
-        return len(self.__storage)
+        return len(self.__client)
 
     def __del__(self):
         del self.__client
-        del self.__storage
-        self.__generator.delete(id(self))
 
     def insert(self, index, value):
-        prefix = id(self)
-        key = self.__generator.next(prefix)
-        self.__storage.insert(index, key)
-        self.__setitem__(index, value)
+        encoded_value = self.__serializer.dumps(value)
+        self.__client.insert(index, encoded_value)
 
 
-class FileDeque:
+class FileDeque(collections.MutableSequence):
 
     def __init__(
         self,
         iterable=(),
         maxlen=None,
-        client_class=clients.TemporaryFileClient,
+        client_class=clients.TemporaryDirectoryClient,
         serializer_class=serializers.PickleZLibSerializer,
     ):
         self.__client = client_class()
         self.__serializer = serializer_class
-        self.__left_index = 0
-        self.__right_index = 0
-        self.__length = 0
         self.__max_length = maxlen
         self.extend(iterable)
 
@@ -101,11 +84,11 @@ class FileDeque:
         del self.__client
 
     def __iter__(self):
-        for idx in range(self.__left_index, self.__right_index):
-            yield self.__get(idx)
+        for idx in range(len(self)):
+            yield self[idx]
 
     def __len__(self):
-        return self.__length
+        return len(self.__client)
 
     def __repr__(self):
         return 'FileDeque(%s)' % self.__str__()
@@ -180,32 +163,44 @@ class FileDeque:
         self.extend(other)
         return self
 
-    def __get(self, idx):
-        encoded_value = self.__client.get(str(idx))
+    #
+    # mutable sequence
+    #
+
+    def __getitem__(self, idx):
+        encoded_value = self.__client[idx]
         return self.__serializer.loads(encoded_value)
 
-    def __set(self, idx, value):
+    def __setitem__(self, idx, value):
         encoded_value = self.__serializer.dumps(value)
-        self.__client.set(str(idx), encoded_value)
 
-    def __delete(self, idx):
-        self.__client.delete(str(idx))
+        if idx >= len(self):
+            self.__client.insert(idx, encoded_value)
+        elif idx < 0:
+            self.__client.insert(0, encoded_value)
+
+    def __delitem__(self, idx):
+        del self.__client[idx]
+
+    def insert(self, idx, value):
+        encoded_value = self.__serializer.dumps(value)
+        self.__client.insert(idx, encoded_value)
+
+    #
+    # deque methods
+    #
 
     def append(self, x):
-        self.__set(self.__right_index, x)
-        self.__right_index += 1
-        self.__length += 1
+        self[len(self)] = x
 
-        if self.__max_length and self.__max_length < self.__length:
+        if self.__max_length and self.__max_length < len(self):
             self.popleft()
 
     def appendleft(self, x):
-        self.__length += 1
-        if self.__max_length and self.__max_length < self.__length:
-            self.pop()
+        self[-1] = x
 
-        self.__left_index -= 1
-        self.__set(self.__left_index, x)
+        if self.__max_length and self.__max_length < len(self):
+            self.pop()
 
     def extend(self, iterable):
         for x in iterable:
@@ -216,29 +211,25 @@ class FileDeque:
             self.appendleft(x)
 
     def pop(self):
-        if not self.__length:
+        if not len(self):
             raise IndexError("pop from an empty deque")
-        self.__right_index -= 1
-        self.__length -= 1
-        value = self.__get(self.__right_index)
-        self.__delete(self.__right_index)
+
+        last_idx = len(self) - 1
+        value = self[last_idx]
+        del self[last_idx]
         return value
 
     def popleft(self):
-        if not self.__length:
+        if not len(self):
             raise IndexError("pop from an empty deque")
-        value = self.__get(self.__left_index)
-        self.__delete(self.__left_index)
-        self.__left_index += 1
-        self.__length -= 1
+
+        value = self[0]
+        del self[0]
         return value
 
     def clear(self):
-        for idx in range(self.__left_index, self.__right_index):
-            self.__delete(idx)
-        self.__left_index = 0
-        self.__right_index = 0
-        self.__length = 0
+        while len(self):
+            self.popleft()
 
     def count(self, value):
         c = 0

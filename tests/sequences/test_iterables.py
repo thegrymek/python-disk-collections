@@ -2,7 +2,7 @@ import collections
 import pytest
 from copy import copy
 
-from diskcollections.iterables import (
+from diskcollections.iterables.iterables import (
     FileList,
     FileDeque,
 )
@@ -238,6 +238,23 @@ class TestFileDeque:
         d1 = FileDeque([1])
         d1.rotate(3)
         assert d1 == [1]
+
+    def test_getitem(self):
+        given = [1, 2, 3]
+        d1 = FileDeque(given)
+        for i, x in enumerate(given):
+            assert d1[i] == x
+
+    def test_insert(self):
+        d1 = FileDeque()
+
+        d1.insert(5, 'c')
+        assert d1[0] == 'c'
+
+        d1.insert(0, 'a')
+        d1.insert(1, 'b')
+        assert d1[0] == 'a'
+        assert d1[1] == 'b'
 
     def test_count(self):
         d1 = FileDeque([1, 2, 2, 3, 3, 3])
