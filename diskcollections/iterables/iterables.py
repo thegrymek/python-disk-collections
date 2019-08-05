@@ -176,7 +176,7 @@ class FileDeque(collections.MutableSequence):
 
         if idx >= len(self):
             self.__client.insert(idx, encoded_value)
-        elif idx < 0:
+        if idx < 0:
             self.__client.insert(0, encoded_value)
 
     def __delitem__(self, idx):
