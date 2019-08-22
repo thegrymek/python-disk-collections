@@ -1,19 +1,16 @@
 import collections
-
-from diskcollections import serializers
 from diskcollections.py2to3 import izip
-from diskcollections.iterables import clients
 
 
-class FileList(collections.MutableSequence):
+class List(collections.MutableSequence):
 
     def __init__(
         self,
         iterable=None,
-        client_class=clients.TemporaryDirectoryClient,
-        serializer_class=serializers.PickleZLibSerializer
+        client_class=None,
+        serializer_class=None
     ):
-        super(FileList, self).__init__()
+        super(List, self).__init__()
         self.__client = client_class()
         self.__serializer = serializer_class
 
@@ -21,11 +18,18 @@ class FileList(collections.MutableSequence):
         self.extend(iterable)
 
     def __repr__(self):
-        return 'FileList%s' % self.__str__()
+        return '%s%s' % (self.__class__, self.__str__())
 
     def __str__(self):
         s = ', '.join(map(repr, self))
         return '[%s]' % s
+
+    def __copy__(self):
+        return self.__class__(
+            self,
+            client_class=self.__client.__class__,
+            serializer_class=self.__serializer,
+        )
 
     def __eq__(self, other):
         total_items = len(self.__client)
@@ -45,8 +49,9 @@ class FileList(collections.MutableSequence):
             indices = index.indices(len(self))
             start, stop, step = indices
             return self.__class__(
-                self[i]
-                for i in range(start, stop, step)
+                (self[i] for i in range(start, stop, step)),
+                client_class=self.__client.__class__,
+                serializer_class=self.__serializer,
             )
         encoded_value = self.__client[index]
         return self.__serializer.loads(encoded_value)
@@ -66,14 +71,14 @@ class FileList(collections.MutableSequence):
         self.__client.insert(index, encoded_value)
 
 
-class FileDeque(collections.MutableSequence):
+class Deque(collections.MutableSequence):
 
     def __init__(
         self,
         iterable=(),
         maxlen=None,
-        client_class=clients.TemporaryDirectoryClient,
-        serializer_class=serializers.PickleZLibSerializer,
+        client_class=None,
+        serializer_class=None,
     ):
         self.__client = client_class()
         self.__serializer = serializer_class
@@ -91,7 +96,7 @@ class FileDeque(collections.MutableSequence):
         return len(self.__client)
 
     def __repr__(self):
-        return 'FileDeque(%s)' % self.__str__()
+        return '%s(%s)' % (self.__class__, self.__str__())
 
     def __str__(self):
         s = ', '.join(map(repr, self))

@@ -55,7 +55,7 @@ class TemporaryDirectoryClient(IClientSequence):
             mode=self.__mode,
             dir=self.__directory.name
         )
-        file.write(value)
+        file.write(bytes(value))
         self.__files[index] = file
 
     def __len__(self):

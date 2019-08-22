@@ -2,9 +2,9 @@ import collections
 import pytest
 from copy import copy
 
-from diskcollections.iterables.iterables import (
-    FileList,
-    FileDeque,
+from diskcollections.iterables import (
+    Deque, List,
+    FileList, FileDeque,
 )
 
 
@@ -57,6 +57,13 @@ class TestFileList:
 
         for i in l2:
             assert i in l1
+
+    def test_copy(self):
+        l1 = FileList([1, 2, 2, 3, 3, 3])
+        l2 = copy(l1)
+        assert l1 == l2
+        assert l1 is not l2
+        assert isinstance(l2, List)
 
     def test_del(self):
         l1 = FileList([0, 1, 2])
@@ -181,7 +188,7 @@ class TestFileDeque:
 
         with pytest.raises(IndexError):
             d1 = FileDeque([1, 2, 3])
-            for i in range(4):
+            for _ in range(4):
                 d1.pop()
 
     def test_extend(self):
@@ -272,7 +279,7 @@ class TestFileDeque:
         d2 = copy(d1)
         assert d1 == d2
         assert d1 is not d2
-        assert isinstance(d2, FileDeque)
+        assert isinstance(d2, Deque)
 
     def test_eq(self):
         d1 = FileDeque([1, 2, 3])
