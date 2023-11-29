@@ -11,12 +11,6 @@ Python Disk Collections
 .. image:: https://img.shields.io/pypi/pyversions/python-disk-collections.svg
   :target: https://pypi.python.org/pypi/python-disk-collections
 
-.. image:: https://travis-ci.org/thegrymek/python-disk-collections.svg?branch=master
-  :target: https://travis-ci.org/thegrymek/python-disk-collections
-
-.. image:: https://coveralls.io/repos/github/thegrymek/python-disk-collections/badge.svg
-  :target: https://coveralls.io/github/thegrymek/python-disk-collections
-
 
 Module contains class with extended python list that stores items at disk.
 By default items before save are pickled and compressed. Use that list
