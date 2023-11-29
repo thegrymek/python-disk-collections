@@ -135,7 +135,60 @@ Contribute
 
 #. Fork repository on GitHub to start making your changes to the **master** branch (or branch off of it).
 #. Write tests that prove that bug or future works as expected
-#. Check your code and tests with **tox**
+#. Install other python versions with **pyenv** together with **tox**:
+
+.. code-block:: bash
+
+  $ sudo apt-get install pyenv tox
+
+#. Install other python versions
+
+.. code-block:: bash
+
+  $ pyenv install 2.7 3.5 3.6 3.7 3.8 3.9 3.10 3.11
+
+
+#. Make them global for **detox** package
+
+.. code-block:: bash
+
+  $ pyenv global 2.7 3.5 3.6 3.7 3.8 3.9 3.10 3.11
+
+#. Install globally **detox**
+
+.. code-block:: bash
+
+  $ sudo pip install detox
+
+#. Check your code and tests with **detox**
+
+.. code-block:: bash
+
+  $ detox -n 1
+  GLOB sdist-make: python-disk-collections/setup.py
+  lint inst-nodeps: python-disk-collections/.tox/.tmp/package/7/python-disk-collections-0.0.4.zip
+  lint run-test-pre: PYTHONHASHSEED='1334400931'
+  lint runtests: commands[0] | flake8
+  lint runtests: commands[1] | python setup.py check -r -s -m
+  py27 inst-nodeps: python-disk-collections/.tox/.tmp/package/7/python-disk-collections-0.0.4.zip
+  py27 run-test-pre: PYTHONHASHSEED='1334400931'
+  py27 runtests: commands[0] | py.test -v --cov diskcollections --cov-config .coveragerc --cov-report term-missing --cov-fail-under 95
+  ...
+  py311 inst-nodeps: python-disk-collections/.tox/.tmp/package/7/python-disk-collections-0.0.4.zip
+  py311 run-test-pre: PYTHONHASHSEED='1334400931'
+  py311 runtests: commands[0] | py.test -v --cov diskcollections --cov-config .coveragerc --cov-report term-missing --cov-fail-under 95
+  _________________________________________________________________________________________________________________ summary __________________________________________________________________________________________________________________
+    lint: commands succeeded
+    py27: commands succeeded
+    py35: commands succeeded
+    py36: commands succeeded
+    py37: commands succeeded
+    py38: commands succeeded
+    py39: commands succeeded
+    py310: commands succeeded
+    py311: commands succeeded
+    congratulations :)
+
 #. Send a pull request!
 
 

@@ -1,3 +1,12 @@
+Version 0.0.4
+-------------
+
+Released 2023-11-29
+
+-   added support for python: 3.8, 3.9, 3.10, 3.11
+-   dropped support for python: 3.4
+-   updated ``README.rst`` with development installation and mentioned about ``detox`` package
+
 Version 0.0.3
 -------------
 

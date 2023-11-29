@@ -15,7 +15,7 @@ with open('README.rst', 'r') as f:
 
 package_name = 'python-disk-collections'
 url_profile = 'https://github.com/thegrymek'
-version = '0.0.3'
+version = '0.0.4'
 setup(
     name=package_name,
     version=version,
@@ -35,10 +35,13 @@ setup(
     classifiers=[
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
 )
