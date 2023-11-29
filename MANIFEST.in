@@ -1,2 +1,2 @@
-include README.rst LICENSE .coveragerc .travis.yml tox.ini
+include README.rst LICENSE .coveragerc tox.ini
 recursive-include tests *.py
