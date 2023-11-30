@@ -86,6 +86,50 @@ To install package type
 How it works
 ------------
 
+Explaining example above:
+
+.. code-block:: python
+
+    >>> from diskcollections.iterables import FileList
+    >>> from diskcollections.serializers import JsonZLibSerializer
+    >>>
+    >>> flist = FileList(serializer_class=JsonZLibSerializer)
+
+New instance of this object creates new temporary directory.
+By using `serializer_class=JsonZLibSerializer` each incoming item to list will be: json.dumped and compressed
+
+.. code-block:: python
+
+    >>> flist.append({'a': 1, 'b': 2, 'c': 3})
+
+so using this serializer have in mind that all objects you put into list
+have to lend themself and compatible with json.
+Exactly this object `{'a': 1, 'b': 2, 'c': 3}` will serialized and compressed and saved inside temporary directory.
+
+.. code-block:: python
+
+    >>> flist[0]
+    {u'a': 1, u'b': 2, u'c': 3}
+
+Getting an item will read a file and because `JsonZLibSerializer` is used: then content will be decompressed and tried
+to loaded from json.
+
+This package provides a few other serializers:
+
+* PickleSerializer - pickle items
+* PickleZLibSerializer - pickle + compress items
+* JsonSerializer - convert to json items
+* JsonZLibSerializer - convert to json + compress items
+
+.. code-block:: python
+
+    from diskcollections.serializers import (
+          PickleSerializer,
+          PickleZLibSerializer,
+          JsonSerializer,
+          JsonZLibSerializer,
+      )
+
 In order to implement your serializer create class with methods:
 **dumps** and **loads** or import interface.
 
