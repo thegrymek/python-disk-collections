@@ -58,7 +58,7 @@ There are available more ways to serialize items.
 
 .. code-block:: python
 
-    >>> from diskcollections.iterables import FileList, FileDeque
+    >>> from diskcollections.iterables import List, FileList, FileDeque
     >>> from diskcollections.serializers import (
         PickleSerializer,  # pickle items
         PickleZLibSerializer,  # pickle + compress items
@@ -66,7 +66,7 @@ There are available more ways to serialize items.
         JsonZLibSerializer  # convert to json + compress items
     )
     >>> from functools import partial
-    >>> JsonFileList = partial(FileList, serializer_class=JsonHandler)
+    >>> JsonFileList = partial(List, serializer_class=JsonHandler)
     >>> flist = JsonFileList()
     >>> flist.append({'a': 1, 'b': 2, 'c': 3})
     >>> flist[0]
@@ -166,6 +166,26 @@ has own unique directory, placed likely in */tmp/*.
 When list is removed by garbage collector, all items that was stored are lost.
 
 For **FileDeque** stores items in the same way as **FileList**.
+
+By default on exit program, or when list or deque is removed: all content of files also are dropped.
+
+To prevent this use `PersistentDirectoryClient`:
+
+.. code-block:: python
+
+    >>> from functools import partial
+
+    >>> from diskcollections.iterables import List, PersistentDirectoryClient
+    >>> from diskcollections.serializers import JsonSerializer
+    >>> from diskcollections.iterables import PersistentDirectoryClient
+
+    >>> dir_abc = partial(PersistentDirectoryClient, "abc")
+    >>> persistent_list = List(client_class=dir_abc, serializer_class=JsonSerializer)
+    >>> persistent_list.append({"a": 1, "b": 2})
+    >>> assert len(persistent_list) == 1
+    >>> assert open("abc/0").read() == '{"a": 1, "b": 2}'
+
+On exit directory `abc` with file `0` of his contents will still exist.
 
 
 Contribute

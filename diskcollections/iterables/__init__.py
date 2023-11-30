@@ -4,6 +4,7 @@ from ..serializers import (
     PickleZLibSerializer
 )
 from .clients import (
+    PersistentDirectoryClient,
     TemporaryDirectoryClient
 )
 from .iterables import (
@@ -26,5 +27,6 @@ FileDeque = partial(
 
 __all__ = (
     'List', 'Deque',
-    'FileDeque', 'FileList', 'TemporaryDirectoryClient'
+    'FileDeque', 'FileList',
+    'PersistentDirectoryClient', 'TemporaryDirectoryClient',
 )
