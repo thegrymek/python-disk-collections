@@ -1,3 +1,12 @@
+Version 0.0.5
+-------------
+
+Released 2023-11-30
+
+-   add new client `PersistentDirectoryClient
+-   remove travis.yml
+-   add better explanation how it works
+
 Version 0.0.4
 -------------
 
