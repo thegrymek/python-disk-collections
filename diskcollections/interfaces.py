@@ -22,7 +22,7 @@ class ISerializer:
         raise NotImplementedError
 
 
-class IClientSequence(collections.MutableSequence):
+class IClientSequence(collections.abc.MutableSequence):
     """Abstract client to manage items in sequence.
 
     Inheritance class has to implement following methods:
