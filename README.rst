@@ -203,14 +203,14 @@ Contribute
 
 .. code-block:: bash
 
-  $ pyenv install 2.7 3.5 3.6 3.7 3.8 3.9 3.10 3.11
+  $ pyenv install 3.7 3.8 3.9 3.10 3.11 3.12 3.13
 
 
 #. Make them global for **detox** package
 
 .. code-block:: bash
 
-  $ pyenv global 2.7 3.5 3.6 3.7 3.8 3.9 3.10 3.11
+  $ pyenv global 3.7 3.8 3.9 3.10 3.11 3.12 3.13
 
 #. Install globally **detox**
 
