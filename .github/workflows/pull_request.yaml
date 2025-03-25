@@ -35,9 +35,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip setuptools wheel tox==4.23.2 virtualenv-pyenv==0.5.0
-        curl -fsSL https://pyenv.run | bash
-        pyenv install ${{ matrix.python-version }}
+        python -m pip install --upgrade pip setuptools wheel tox==4.23.2
 
     - name: Run tox targets for ${{ matrix.python-version }}
       run: tox run -f py$(echo ${{ matrix.python-version }} | tr -d .)
