@@ -42,12 +42,6 @@ jobs:
     - name: Run tox targets for ${{ matrix.python-version }}
       run: tox run -f py$(echo ${{ matrix.python-version }} | tr -d .)
 
-    - name: Upload coverage data
-      uses: actions/upload-artifact@v3
-      with:
-        name: coverage-data
-        path: '.coverage.*'
-
   coverage:
     name: Coverage
     runs-on: ubuntu-22.04
