@@ -210,7 +210,7 @@ Contribute
 
 .. code-block:: bash
 
-  $ tox
+  $ VIRTUALENV_DISCOVERY=pyenv tox
   ---------- coverage: platform linux, python 3.13.2-final-0 -----------
   Name                                     Stmts   Miss Branch BrPart  Cover   Missing
   ------------------------------------------------------------------------------------
