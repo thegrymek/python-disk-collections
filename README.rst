@@ -197,55 +197,43 @@ Contribute
 
 .. code-block:: bash
 
-  $ sudo apt-get install pyenv tox
+  $ sudo apt-get install pyenv tox==4.23.2 virtualenv-pyenv==0.5.0
 
-#. Install other python versions
+#. Install python versions
 
 .. code-block:: bash
 
   $ pyenv install 3.7 3.8 3.9 3.10 3.11 3.12 3.13
 
 
-#. Make them global for **detox** package
+#. Check your code and tests with **tox**
 
 .. code-block:: bash
 
-  $ pyenv global 3.7 3.8 3.9 3.10 3.11 3.12 3.13
+  $ VIRTUALENV_DISCOVERY=pyenv tox
+  ---------- coverage: platform linux, python 3.13.2-final-0 -----------
+  Name                                     Stmts   Miss Branch BrPart  Cover   Missing
+  ------------------------------------------------------------------------------------
+  diskcollections/__init__.py                  0      0      0      0   100%
+  diskcollections/iterables/__init__.py        7      0      0      0   100%
+  diskcollections/iterables/clients.py       112      1     28      1    99%   90
+  diskcollections/iterables/iterables.py     159      0     74      0   100%
+  diskcollections/serializers.py              32      0      0      0   100%
+  ------------------------------------------------------------------------------------
+  TOTAL                                      310      1    102      1    99%
 
-#. Install globally **detox**
+  Required test coverage of 95% reached. Total coverage: 99.51%
+  ====================================================================================================== 63 passed, 1 warning in 0.46s =======================================================================================================
+    lint: OK (0.55=setup[0.03]+cmd[0.20,0.32] seconds)
+    py37: OK (0.47=setup[0.01]+cmd[0.46] seconds)
+    py38: OK (0.47=setup[0.01]+cmd[0.46] seconds)
+    py39: OK (0.47=setup[0.01]+cmd[0.46] seconds)
+    py310: OK (0.63=setup[0.01]+cmd[0.62] seconds)
+    py311: OK (0.45=setup[0.01]+cmd[0.45] seconds)
+    py312: OK (0.69=setup[0.01]+cmd[0.69] seconds)
+    py313: OK (0.75=setup[0.01]+cmd[0.74] seconds)
+    evaluation failed :( (4.12 seconds)
 
-.. code-block:: bash
-
-  $ sudo pip install detox
-
-#. Check your code and tests with **detox**
-
-.. code-block:: bash
-
-  $ detox -n 1
-  GLOB sdist-make: python-disk-collections/setup.py
-  lint inst-nodeps: python-disk-collections/.tox/.tmp/package/7/python-disk-collections-0.0.4.zip
-  lint run-test-pre: PYTHONHASHSEED='1334400931'
-  lint runtests: commands[0] | flake8
-  lint runtests: commands[1] | python setup.py check -r -s -m
-  py27 inst-nodeps: python-disk-collections/.tox/.tmp/package/7/python-disk-collections-0.0.4.zip
-  py27 run-test-pre: PYTHONHASHSEED='1334400931'
-  py27 runtests: commands[0] | py.test -v --cov diskcollections --cov-config .coveragerc --cov-report term-missing --cov-fail-under 95
-  ...
-  py311 inst-nodeps: python-disk-collections/.tox/.tmp/package/7/python-disk-collections-0.0.4.zip
-  py311 run-test-pre: PYTHONHASHSEED='1334400931'
-  py311 runtests: commands[0] | py.test -v --cov diskcollections --cov-config .coveragerc --cov-report term-missing --cov-fail-under 95
-  _________________________________________________________________________________________________________________ summary __________________________________________________________________________________________________________________
-    lint: commands succeeded
-    py27: commands succeeded
-    py35: commands succeeded
-    py36: commands succeeded
-    py37: commands succeeded
-    py38: commands succeeded
-    py39: commands succeeded
-    py310: commands succeeded
-    py311: commands succeeded
-    congratulations :)
 
 #. Send a pull request!
 
