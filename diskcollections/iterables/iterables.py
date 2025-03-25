@@ -1,14 +1,12 @@
 import collections
+
 from diskcollections.py2to3 import izip
 
 
 class List(collections.abc.MutableSequence):
 
     def __init__(
-        self,
-        iterable=None,
-        client_class=None,
-        serializer_class=None
+        self, iterable=None, client_class=None, serializer_class=None
     ):
         super(List, self).__init__()
         self.__client = client_class()
@@ -18,11 +16,11 @@ class List(collections.abc.MutableSequence):
         self.extend(iterable)
 
     def __repr__(self):
-        return '%s%s' % (self.__class__, self.__str__())
+        return "%s%s" % (self.__class__, self.__str__())
 
     def __str__(self):
-        s = ', '.join(map(repr, self))
-        return '[%s]' % s
+        s = ", ".join(map(repr, self))
+        return "[%s]" % s
 
     def __copy__(self):
         return self.__class__(
@@ -96,11 +94,11 @@ class Deque(collections.abc.MutableSequence):
         return len(self.__client)
 
     def __repr__(self):
-        return '%s(%s)' % (self.__class__, self.__str__())
+        return "%s(%s)" % (self.__class__, self.__str__())
 
     def __str__(self):
-        s = ', '.join(map(repr, self))
-        return '[%s]' % s
+        s = ", ".join(map(repr, self))
+        return "[%s]" % s
 
     def __copy__(self):
         return self.__class__(

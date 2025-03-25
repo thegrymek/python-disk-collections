@@ -1,12 +1,8 @@
 import pytest
+
 from diskcollections import serializers
 
-primitive_values = [
-    'a',
-    1,
-    [1, 2, 3],
-    {'a': 1, 'b': 2, 'c': [1, 2, 3]}
-]
+primitive_values = ["a", 1, [1, 2, 3], {"a": 1, "b": 2, "c": [1, 2, 3]}]
 
 serializers_classes = [
     serializers.JsonSerializer,
@@ -16,17 +12,13 @@ serializers_classes = [
 ]
 
 
-@pytest.fixture(
-    params=primitive_values,
-    ids=list(map(str, primitive_values))
-)
+@pytest.fixture(params=primitive_values, ids=list(map(str, primitive_values)))
 def primitive_value(request):
     return request.param
 
 
 @pytest.fixture(
-    params=serializers_classes,
-    ids=list(map(str, serializers_classes))
+    params=serializers_classes, ids=list(map(str, serializers_classes))
 )
 def serializer_class(request):
     return request.param

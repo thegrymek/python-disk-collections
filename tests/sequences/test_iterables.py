@@ -1,21 +1,19 @@
 import collections
-import pytest
 from copy import copy
 
-from diskcollections.iterables import (
-    Deque, List,
-    FileList, FileDeque,
-)
+import pytest
+
+from diskcollections.iterables import Deque, FileDeque, FileList, List
 
 
 class TestFileList:
 
     def test_init(self):
-        l1 = FileList([1, 'a', [5, 'b']])
+        l1 = FileList([1, "a", [5, "b"]])
         assert len(l1) == 3
         assert l1[0] == 1
-        assert l1[1] == 'a'
-        assert l1[2] == [5, 'b']
+        assert l1[1] == "a"
+        assert l1[2] == [5, "b"]
 
     def test_init_exceptions(self):
         with pytest.raises(TypeError):
@@ -103,7 +101,7 @@ class TestFileList:
         assert l1[2:3] == l1[2:3]
 
     def test_str(self):
-        l1 = [1, 'b', ['abc', 3], {1, 2, 3}]
+        l1 = [1, "b", ["abc", 3], {1, 2, 3}]
         f1 = FileList(l1)
         assert str(l1) == str(f1)
 
@@ -134,9 +132,9 @@ class TestFileList:
 class TestFileDeque:
 
     def test_init(self):
-        d1 = FileDeque([1, 'a', [5, 'b']])
+        d1 = FileDeque([1, "a", [5, "b"]])
         assert len(d1) == 3
-        assert d1 == [1, 'a', [5, 'b']]
+        assert d1 == [1, "a", [5, "b"]]
 
     def test_maxlen(self):
         d1 = FileDeque([1, 2], maxlen=3)
@@ -255,13 +253,13 @@ class TestFileDeque:
     def test_insert(self):
         d1 = FileDeque()
 
-        d1.insert(5, 'c')
-        assert d1[0] == 'c'
+        d1.insert(5, "c")
+        assert d1[0] == "c"
 
-        d1.insert(0, 'a')
-        d1.insert(1, 'b')
-        assert d1[0] == 'a'
-        assert d1[1] == 'b'
+        d1.insert(0, "a")
+        d1.insert(1, "b")
+        assert d1[0] == "a"
+        assert d1[1] == "b"
 
     def test_count(self):
         d1 = FileDeque([1, 2, 2, 3, 3, 3])
@@ -270,7 +268,7 @@ class TestFileDeque:
         assert d1.count(3) == 3
 
     def test_str(self):
-        l1 = [1, 'b', ['abc', 3], {1, 2, 3}]
+        l1 = [1, "b", ["abc", 3], {1, 2, 3}]
         d1 = FileDeque(l1)
         assert str(l1) == str(d1)
 

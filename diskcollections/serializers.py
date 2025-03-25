@@ -14,9 +14,7 @@ class PickleZLibSerializer(ISerializer):
 
     @staticmethod
     def dumps(
-        obj,
-        protocol=pickle.HIGHEST_PROTOCOL,
-        level=zlib.Z_DEFAULT_COMPRESSION
+        obj, protocol=pickle.HIGHEST_PROTOCOL, level=zlib.Z_DEFAULT_COMPRESSION
     ):
         pickled = pickle.dumps(obj, protocol=protocol)
         compressed = zlib.compress(pickled, level)

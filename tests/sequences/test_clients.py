@@ -5,24 +5,24 @@ from diskcollections.iterables import clients
 
 class TestTemporaryDirectoryClient:
 
-    def create_client(self, mode='w+'):
+    def create_client(self, mode="w+"):
         return clients.TemporaryDirectoryClient(mode=mode)
 
     def test_append(self):
         client = self.create_client()
-        client.append('abc')
-        assert client[0] == 'abc'
+        client.append("abc")
+        assert client[0] == "abc"
 
     def test_insert(self):
         client = self.create_client()
-        client.extend(['a', 'b', 'c'])
-        client.insert(1, 'z')
-        assert list(client) == ['a', 'z', 'b', 'c']
+        client.extend(["a", "b", "c"])
+        client.insert(1, "z")
+        assert list(client) == ["a", "z", "b", "c"]
 
     def test_slice(self):
         client = self.create_client()
-        client.extend(['a', 'b', 'c'])
-        assert list(client[0:2]) == ['a', 'b']
+        client.extend(["a", "b", "c"])
+        assert list(client[0:2]) == ["a", "b"]
 
 
 class TestPersistentDirectoryClient:
@@ -32,29 +32,29 @@ class TestPersistentDirectoryClient:
 
     def test_append(self):
         client = self.create_client()
-        client.append('abc')
-        assert client[0] == 'abc'
+        client.append("abc")
+        assert client[0] == "abc"
 
     def test_insert(self):
         client = self.create_client()
-        client.extend(['a', 'b', 'c', 'd'])
-        client.insert(1, 'z')
-        assert list(client) == ['a', 'z', 'b', 'c', 'd']
+        client.extend(["a", "b", "c", "d"])
+        client.insert(1, "z")
+        assert list(client) == ["a", "z", "b", "c", "d"]
 
         client[2] = "x"
-        assert list(client) == ['a', 'z', 'x', 'c', 'd']
+        assert list(client) == ["a", "z", "x", "c", "d"]
 
         del client[3]
-        assert list(client) == ['a', 'z', 'x', 'd']
+        assert list(client) == ["a", "z", "x", "d"]
 
         client.append("y")
 
-        assert list(client) == ['a', 'z', 'x', 'd', 'y']
+        assert list(client) == ["a", "z", "x", "d", "y"]
 
     def test_slice(self):
         client = self.create_client()
-        client.extend(['a', 'b', 'c'])
-        assert list(client[0:2]) == ['a', 'b']
+        client.extend(["a", "b", "c"])
+        assert list(client[0:2]) == ["a", "b"]
 
     def test_dir_exists(self):
         client = self.create_client()
