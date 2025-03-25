@@ -25,7 +25,6 @@ setup(
                 'like bulltins but keeps items at disk.',
     long_description=readme,
     packages=find_packages(),
-    tests_require=['pytest', 'tox', 'flake8'],
     url=url(url_profile, package_name),
     download_url=url(url_profile, package_name, 'archive/%s.tar.gz' % version),
     license='MIT',
