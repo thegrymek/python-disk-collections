@@ -15,7 +15,7 @@ class TemporaryDirectoryClient(IClientSequence):
     new content.
     """
 
-    def __init__(self, iterable=(), mode='w+b'):
+    def __init__(self, iterable=(), mode="w+b"):
         super(TemporaryDirectoryClient, self).__init__()
         self.__mode = mode
         self.__files = []
@@ -23,11 +23,11 @@ class TemporaryDirectoryClient(IClientSequence):
         self.extend(iterable)
 
     def __repr__(self):
-        return 'TemporaryDirectoryClient(%s)' % self.__str__()
+        return "TemporaryDirectoryClient(%s)" % self.__str__()
 
     def __str__(self):
-        s = ', '.join(map(repr, self))
-        return '[%s]' % s
+        s = ", ".join(map(repr, self))
+        return "[%s]" % s
 
     def __del__(self):
         for f in self.__files:
@@ -41,10 +41,7 @@ class TemporaryDirectoryClient(IClientSequence):
         if isinstance(index, slice):
             indices = index.indices(len(self))
             start, stop, step = indices
-            items = (
-                self[i]
-                for i in range(start, stop, step)
-            )
+            items = (self[i] for i in range(start, stop, step))
             return self.__class__(iterable=items, mode=self.__mode)
 
         file = self.__files[index]
@@ -53,8 +50,7 @@ class TemporaryDirectoryClient(IClientSequence):
 
     def __setitem__(self, index, value):
         file = tempfile.TemporaryFile(
-            mode=self.__mode,
-            dir=self.__directory.name
+            mode=self.__mode, dir=self.__directory.name
         )
         file.write(bytes(value))
         self.__files[index] = file
@@ -64,8 +60,7 @@ class TemporaryDirectoryClient(IClientSequence):
 
     def insert(self, index, value):
         file = tempfile.TemporaryFile(
-            mode=self.__mode,
-            dir=self.__directory.name
+            mode=self.__mode, dir=self.__directory.name
         )
         file.write(value)
         self.__files.insert(index, file)
@@ -83,7 +78,7 @@ class PersistentDirectoryClient(IClientSequence):
 
     def __init__(self, directory, iterable=()):
         super(PersistentDirectoryClient, self).__init__()
-        self.__mode = 'w+'
+        self.__mode = "w+"
         self.__files = []
 
         if not os.path.exists(directory):
@@ -93,11 +88,11 @@ class PersistentDirectoryClient(IClientSequence):
         self.extend(iterable)
 
     def __repr__(self):
-        return 'PersistentDirectoryClient(%s)' % self.__str__()
+        return "PersistentDirectoryClient(%s)" % self.__str__()
 
     def __str__(self):
-        s = ', '.join(map(repr, self))
-        return '[%s]' % s
+        s = ", ".join(map(repr, self))
+        return "[%s]" % s
 
     def __del__(self):
         for f in self.__files:
@@ -137,10 +132,7 @@ class PersistentDirectoryClient(IClientSequence):
         if isinstance(index, slice):
             indices = index.indices(len(self))
             start, stop, step = indices
-            items = (
-                self[i]
-                for i in range(start, stop, step)
-            )
+            items = (self[i] for i in range(start, stop, step))
             return self.__class__(
                 self.__directory,
                 iterable=items,

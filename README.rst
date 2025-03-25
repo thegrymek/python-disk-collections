@@ -205,7 +205,6 @@ Contribute
 
   $ pyenv install 3.7 3.8 3.9 3.10 3.11 3.12 3.13
 
-
 #. Check your code and tests with **tox**
 
 .. code-block:: bash
@@ -234,6 +233,11 @@ Contribute
     py313: OK (0.75=setup[0.01]+cmd[0.74] seconds)
     evaluation failed :( (4.12 seconds)
 
+#. Lint your code
+
+.. code-block:: bash
+
+    $ tox -e lint
 
 #. Send a pull request!
 

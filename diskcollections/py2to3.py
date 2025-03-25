@@ -13,6 +13,7 @@ else:
 if sys.version_info >= (3, 4):
     TemporaryDirectory = tempfile.TemporaryDirectory
 else:
+
     class TemporaryDirectory:
         def __init__(self):
             self._directory_path = tempfile.mkdtemp()

@@ -11,9 +11,51 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  flake8:
+    name: flake8
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install flake8
+      - name: flake8
+        uses: liskin/gh-problem-matcher-wrap@e7b7beaaafa52524748b31a381160759d68d61fb
+        with:
+          linters: flake8
+          run: flake8
+
+  isort:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install "isort<6"
+      - name: isort
+        # Pinned to v3.0.0.
+        uses: liskin/gh-problem-matcher-wrap@e7b7beaaafa52524748b31a381160759d68d61fb
+        with:
+          linters: isort
+          run: isort --check --diff diskcollections tests
+  black:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: black
+        uses: psf/black@stable
+
   tests:
     name: Python ${{ matrix.python-version }}
     runs-on: ubuntu-22.04
+    needs: ["flake8", "isort", "black"]
     strategy:
       matrix:
         python-version:
@@ -50,7 +92,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install dependencies
         run: python -m pip install --upgrade coverage[toml]
