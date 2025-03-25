@@ -23,18 +23,14 @@ jobs:
         - "3.9"
         - "3.10"
         - "3.11"
-        - "3.12"
-        - "3.13"
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-          fetch-depth: 0
-    - uses: actions/setup-python@v4
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-        cache: pip
-        cache-dependency-path: 'requirements/*.txt'
 
     - name: Install dependencies
       run: |
@@ -43,12 +39,6 @@ jobs:
 
     - name: Run tox targets for ${{ matrix.python-version }}
       run: tox run -f py$(echo ${{ matrix.python-version }} | tr -d .)
-
-    - name: Upload coverage data
-      uses: actions/upload-artifact@v3
-      with:
-        name: coverage-data
-        path: '.coverage.*'
 
   coverage:
     name: Coverage
@@ -75,10 +65,3 @@ jobs:
           python -m coverage combine
           python -m coverage html --skip-covered --skip-empty
           python -m coverage report --fail-under=95
-
-      - name: Upload HTML report
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: html-report
-          path: htmlcov
