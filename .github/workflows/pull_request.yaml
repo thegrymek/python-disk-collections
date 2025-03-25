@@ -29,7 +29,6 @@ jobs:
           run: flake8
 
   isort:
-    needs: flake8
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -46,7 +45,6 @@ jobs:
           linters: isort
           run: isort --check --diff diskcollections tests
   black:
-    needs: isort
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -56,7 +54,8 @@ jobs:
 
   tests:
     name: Python ${{ matrix.python-version }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    needs: ["flake8", "isort", "black"]
     strategy:
       matrix:
         python-version:
