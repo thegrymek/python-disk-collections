@@ -2,7 +2,7 @@ import collections
 from diskcollections.py2to3 import izip
 
 
-class List(collections.MutableSequence):
+class List(collections.abc.MutableSequence):
 
     def __init__(
         self,
@@ -71,7 +71,7 @@ class List(collections.MutableSequence):
         self.__client.insert(index, encoded_value)
 
 
-class Deque(collections.MutableSequence):
+class Deque(collections.abc.MutableSequence):
 
     def __init__(
         self,
