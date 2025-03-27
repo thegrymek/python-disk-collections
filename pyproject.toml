@@ -22,7 +22,6 @@ keywords = [
 ]
 classifiers = [
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -33,7 +32,7 @@ classifiers = [
 ]
 dependencies = [
 ]
-requires-python = ">=3.7,<4.0"
+requires-python = ">=3.8,<4.0"
 
 [project.urls]
 Repository = "https://github.com/thegrymek/python-disk-collections"
@@ -47,6 +46,7 @@ dev = [
     "pytest>=7.4.4",
     "pytest-cov>=4.1.0",
     "tox>=3.28.0",
+    "tox-uv>=1.13.1",
 ]
 
 [tool.black]

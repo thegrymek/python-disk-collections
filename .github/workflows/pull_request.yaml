@@ -79,13 +79,10 @@ jobs:
     - name: Install required Python versions
       run: |
         uv python install ${{ matrix.python-version }}
-
     - name: Install dependencies
       run: |
-        uv sync
-        uv tool install tox --with tox-uv
-
-    - name: Run tox targets for ${{ matrix.python-version }}
+        uv sync --frozen --all-groups
+    - name: Run tox targets for python ${{ matrix.python-version }}
       run: tox run -f $(echo ${{ matrix.python-version }} | tr -d .)
 
   coverage:
