@@ -1,3 +1,16 @@
+Version 0.0.6
+-------------
+
+Released 2025-03-26
+
+-   Add pull_request pipeline. by @thegrymek in #7
+-   Fix pull request pipeline by @thegrymek in #8
+-   Fix deprecated use of MutableSequence by @thegrymek in #6
+-   Drop support for python 2.7, 3.5, 3.6. by @thegrymek in #9
+-   Upgrade tox to version 4.2 by @thegrymek in #10
+-   Add linters: black, flake8, isort by @thegrymek in #11
+-   Release 0.0.6 by @thegrymek in #12
+
 Version 0.0.5
 -------------
 
