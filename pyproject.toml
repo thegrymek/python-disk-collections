@@ -40,14 +40,23 @@ Releases = "https://github.com/thegrymek/python-disk-collections/releases"
 
 [dependency-groups]
 dev = [
-    "black>=23.3.0",
-    "flake8>=5.0.4",
-    "isort>=5.11.5",
     "pytest>=7.4.4",
     "pytest-cov>=4.1.0",
     "tox>=3.28.0",
     "tox-uv>=1.13.1",
+    { include-group = "lint" }
+]
+lint = [
+    "ruff>=0.11.2",
 ]
 
-[tool.black]
+[tool.ruff]
+target-version = "py313"
 line-length = 79
+fix = true
+
+[tool.ruff.format]
+preview = true
+
+[tool.coverage.report]
+skip_empty = true

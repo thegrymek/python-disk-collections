@@ -7,7 +7,6 @@ from diskcollections.iterables import Deque, FileDeque, FileList, List
 
 
 class TestFileList:
-
     def test_init(self):
         l1 = FileList([1, "a", [5, "b"]])
         assert len(l1) == 3
@@ -130,7 +129,6 @@ class TestFileList:
 
 
 class TestFileDeque:
-
     def test_init(self):
         d1 = FileDeque([1, "a", [5, "b"]])
         assert len(d1) == 3
