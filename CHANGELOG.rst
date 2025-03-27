@@ -1,3 +1,9 @@
+Version 0.1.0
+-------------
+
+Still in progress
+
+
 Version 0.0.6
 -------------
 
