@@ -59,7 +59,6 @@ jobs:
     strategy:
       matrix:
         python-version:
-        - "3.7"
         - "3.8"
         - "3.9"
         - "3.10"
@@ -83,7 +82,7 @@ jobs:
       run: |
         uv sync --frozen --all-groups
     - name: Run tox targets for python ${{ matrix.python-version }}
-      run: tox run -f $(echo ${{ matrix.python-version }} | tr -d .)
+      run: uv run tox run -f $(echo ${{ matrix.python-version }} | tr -d .)
 
   coverage:
     name: Coverage

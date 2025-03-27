@@ -208,7 +208,7 @@ Contribute
 
 .. code-block:: bash
 
-  $ uv python install 3.7 3.8 3.9 3.10 3.11 3.12 3.13
+  $ uv python install 3.8 3.9 3.10 3.11 3.12 3.13
 
 #. Check your code and tests with **tox**
 
