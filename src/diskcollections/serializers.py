@@ -11,7 +11,6 @@ class PickleSerializer(ISerializer):
 
 
 class PickleZLibSerializer(ISerializer):
-
     @staticmethod
     def dumps(
         obj, protocol=pickle.HIGHEST_PROTOCOL, level=zlib.Z_DEFAULT_COMPRESSION
@@ -33,7 +32,6 @@ class JsonSerializer(ISerializer):
 
 
 class JsonZLibSerializer(ISerializer):
-
     @staticmethod
     def dumps(obj, level=zlib.Z_DEFAULT_COMPRESSION):
         jsoned = json.dumps(obj).encode()

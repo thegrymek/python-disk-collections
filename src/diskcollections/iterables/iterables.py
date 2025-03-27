@@ -4,7 +4,6 @@ from diskcollections.py2to3 import izip
 
 
 class List(collections.abc.MutableSequence):
-
     def __init__(
         self, iterable=None, client_class=None, serializer_class=None
     ):
@@ -70,7 +69,6 @@ class List(collections.abc.MutableSequence):
 
 
 class Deque(collections.abc.MutableSequence):
-
     def __init__(
         self,
         iterable=(),

@@ -4,7 +4,6 @@ from diskcollections.iterables import clients
 
 
 class TestTemporaryDirectoryClient:
-
     def create_client(self, mode="w+"):
         return clients.TemporaryDirectoryClient(mode=mode)
 
@@ -26,7 +25,6 @@ class TestTemporaryDirectoryClient:
 
 
 class TestPersistentDirectoryClient:
-
     def create_client(self):
         return clients.PersistentDirectoryClient("persistent_dir")
 

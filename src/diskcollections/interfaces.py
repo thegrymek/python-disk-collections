@@ -2,7 +2,6 @@ import collections
 
 
 class ISerializer:
-
     @staticmethod
     def dumps(obj):
         """Converts object to serialized format.
