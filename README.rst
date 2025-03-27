@@ -196,23 +196,25 @@ Contribute
 
 #. Fork repository on GitHub to start making your changes to the **master** branch (or branch off of it).
 #. Write tests that prove that bug or future works as expected
-#. Install other python versions with **pyenv** together with **tox**:
+#. Install other python versions with **uv** together with **tox**:
 
 .. code-block:: bash
 
-  $ sudo apt-get install pyenv tox==4.23.2 virtualenv-pyenv==0.5.0
+  $ pip install uv
+  $ uv sync
+  $ uv tool install tox --with tox-uv
 
 #. Install python versions
 
 .. code-block:: bash
 
-  $ pyenv install 3.7 3.8 3.9 3.10 3.11 3.12 3.13
+  $ uv python install 3.7 3.8 3.9 3.10 3.11 3.12 3.13
 
 #. Check your code and tests with **tox**
 
 .. code-block:: bash
 
-  $ VIRTUALENV_DISCOVERY=pyenv tox
+  $ tox
   ---------- coverage: platform linux, python 3.13.2-final-0 -----------
   Name                                     Stmts   Miss Branch BrPart  Cover   Missing
   ------------------------------------------------------------------------------------
