@@ -1,6 +1,6 @@
 import os.path
 import tempfile
-from typing import AnyStr, Optional
+from typing import Optional
 
 from diskcollections.interfaces import IClientSequence
 from diskcollections.py2to3 import TemporaryDirectory
@@ -77,12 +77,14 @@ class TemporaryDirectoryClient(IClientSequence):
         except TypeError:
             pass
 
+        exc = None
+
         for mode in self.__available_modes:
             try:
                 return self.__write(value, mode=mode)
             except TypeError as e:
-                pass
-        raise e
+                exc = e
+        raise exc
 
 
 class PersistentDirectoryClient(IClientSequence):
@@ -228,9 +230,12 @@ class PersistentDirectoryClient(IClientSequence):
         except TypeError:
             pass
 
+        exc = None
+
         for mode in self.__available_modes:
             try:
                 return self.__write(file_path, value, mode=mode)
             except TypeError as e:
-                pass
-        raise e
+                exc = e
+
+        raise exc

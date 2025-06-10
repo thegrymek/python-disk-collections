@@ -1,4 +1,3 @@
-import random
 import shutil
 import uuid
 from functools import partial
