@@ -1,10 +1,9 @@
-import collections
 import inspect
+from collections.abc import MutableSequence
 from functools import partial
-from diskcollections.py2to3 import izip
 
 
-class List(collections.abc.MutableSequence):
+class List(MutableSequence):
     def __init__(
         self, iterable=None, client_class=None, serializer_class=None
     ):
@@ -76,7 +75,7 @@ class List(collections.abc.MutableSequence):
         self.__client.insert(index, encoded_value)
 
 
-class Deque(collections.abc.MutableSequence):
+class Deque(MutableSequence):
     def __init__(
         self,
         iterable=(),
@@ -124,7 +123,7 @@ class Deque(collections.abc.MutableSequence):
         if len(self) != len(other):
             return False
 
-        for i, j in izip(self, other):
+        for i, j in zip(self, other):
             if i != j:
                 return False
 
@@ -134,14 +133,14 @@ class Deque(collections.abc.MutableSequence):
         if len(self) != len(other):
             return True
 
-        for i, j in izip(self, other):
+        for i, j in zip(self, other):
             if i != j:
                 return True
 
         return False
 
     def __lt__(self, other):
-        for i, j in izip(self, other):
+        for i, j in zip(self, other):
             if i >= j:
                 return False
 
@@ -151,7 +150,7 @@ class Deque(collections.abc.MutableSequence):
         return True
 
     def __le__(self, other):
-        for i, j in izip(self, other):
+        for i, j in zip(self, other):
             if i > j:
                 return False
 
@@ -161,14 +160,14 @@ class Deque(collections.abc.MutableSequence):
         return True
 
     def __gt__(self, other):
-        for i, j in izip(self, other):
+        for i, j in zip(self, other):
             if i <= j:
                 return False
 
         return True
 
     def __ge__(self, other):
-        for i, j in izip(self, other):
+        for i, j in zip(self, other):
             if i < j:
                 return False
 
