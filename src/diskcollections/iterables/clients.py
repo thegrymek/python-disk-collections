@@ -3,7 +3,6 @@ import tempfile
 from typing import Optional
 
 from diskcollections.interfaces import IClientSequence
-from diskcollections.py2to3 import TemporaryDirectory
 
 mode_str = "w+"
 mode_bytes = "w+b"
@@ -25,7 +24,7 @@ class TemporaryDirectoryClient(IClientSequence):
         self.__mode = mode
         self.__available_modes = modes - {mode}
         self.__files = []
-        self.__directory = TemporaryDirectory()
+        self.__directory = tempfile.TemporaryDirectory()
         self.extend(iterable)
 
     def __repr__(self):
