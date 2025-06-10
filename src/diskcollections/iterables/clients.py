@@ -1,8 +1,13 @@
 import os.path
 import tempfile
+from typing import Optional
 
 from diskcollections.interfaces import IClientSequence
 from diskcollections.py2to3 import TemporaryDirectory
+
+mode_str = "w+"
+mode_bytes = "w+b"
+modes = {mode_str, mode_bytes}
 
 
 class TemporaryDirectoryClient(IClientSequence):
@@ -15,9 +20,10 @@ class TemporaryDirectoryClient(IClientSequence):
     new content.
     """
 
-    def __init__(self, iterable=(), mode="w+b"):
+    def __init__(self, iterable=(), mode=mode_bytes):
         super(TemporaryDirectoryClient, self).__init__()
         self.__mode = mode
+        self.__available_modes = modes - {mode}
         self.__files = []
         self.__directory = TemporaryDirectory()
         self.extend(iterable)
@@ -49,21 +55,36 @@ class TemporaryDirectoryClient(IClientSequence):
         return file.read()
 
     def __setitem__(self, index, value):
-        file = tempfile.TemporaryFile(
-            mode=self.__mode, dir=self.__directory.name
-        )
-        file.write(bytes(value))
+        file = self.safe_write(value)
         self.__files[index] = file
 
     def __len__(self):
         return len(self.__files)
 
     def insert(self, index, value):
-        file = tempfile.TemporaryFile(
-            mode=self.__mode, dir=self.__directory.name
-        )
-        file.write(value)
+        file = self.safe_write(value)
         self.__files.insert(index, file)
+
+    def __write(self, value, mode: Optional[str] = None):
+        mode = mode or self.__mode
+        file = tempfile.TemporaryFile(mode=mode, dir=self.__directory.name)
+        file.write(value)
+        return file
+
+    def safe_write(self, value):
+        try:
+            return self.__write(value)
+        except TypeError:
+            pass
+
+        exc = None
+
+        for mode in self.__available_modes:
+            try:
+                return self.__write(value, mode=mode)
+            except TypeError as e:
+                exc = e
+        raise exc
 
 
 class PersistentDirectoryClient(IClientSequence):
@@ -79,6 +100,7 @@ class PersistentDirectoryClient(IClientSequence):
     def __init__(self, directory, iterable=()):
         super(PersistentDirectoryClient, self).__init__()
         self.__mode = "w+"
+        self.__available_modes = modes - {self.__mode}
         self.__files = []
 
         if not os.path.exists(directory):
@@ -102,9 +124,9 @@ class PersistentDirectoryClient(IClientSequence):
         """Delete item from given index.
 
         Delete means here:
-        - delete file undex `files[index]`
+        - delete file under `files[index]`
         - when item is deleted then list become smaller
-        - rename and reopen higher then index files
+        - rename and reopen higher than index files
         """
         file = self.__files[index]
         del self.__files[index]
@@ -144,16 +166,14 @@ class PersistentDirectoryClient(IClientSequence):
 
     def __setitem__(self, index, value):
         file_path = self.get_file_path(index)
-        file = open(file_path, mode=self.__mode)
-        file.write(value)
-        file.seek(0)
+        file = self.safe_write(file_path, value)
         self.__files[index] = file
 
     def __len__(self):
         return len(self.__files)
 
     def get_file_path(self, index):
-        return "%s/%s" % (self.__directory, index)
+        return f"{self.__directory}/{index}"
 
     def insert(self, index, value):
         """Insert value to index.
@@ -170,9 +190,7 @@ class PersistentDirectoryClient(IClientSequence):
         """
         if index >= len(self.__files):
             file_path = self.get_file_path(index)
-            file = open(file_path, mode=self.__mode)
-            file.write(value)
-            file.seek(0)
+            file = self.safe_write(file_path, value)
             self.__files.insert(index, file)
             return
 
@@ -186,9 +204,7 @@ class PersistentDirectoryClient(IClientSequence):
             os.rename(old_file_path, new_file_path)
 
         file_path = self.get_file_path(index)
-        file = open(file_path, mode=self.__mode)
-        file.write(value)
-        file.seek(0)
+        file = self.safe_write(file_path, value)
         self.__files.insert(index, file)
 
         for i in range(len(self.__files)):
@@ -200,3 +216,26 @@ class PersistentDirectoryClient(IClientSequence):
             file = open(file_path, mode="r+")
 
             self.__files[i] = file
+
+    def __write(self, file_path, value, mode: Optional[str] = None):
+        mode = mode or self.__mode
+        file = open(file_path, mode=mode)
+        file.write(value)
+        file.seek(0)
+        return file
+
+    def safe_write(self, file_path, value):
+        try:
+            return self.__write(file_path, value)
+        except TypeError:
+            pass
+
+        exc = None
+
+        for mode in self.__available_modes:
+            try:
+                return self.__write(file_path, value, mode=mode)
+            except TypeError as e:
+                exc = e
+
+        raise exc

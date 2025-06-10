@@ -1,5 +1,6 @@
 import collections
-
+import inspect
+from functools import partial
 from diskcollections.py2to3 import izip
 
 
@@ -8,7 +9,14 @@ class List(collections.abc.MutableSequence):
         self, iterable=None, client_class=None, serializer_class=None
     ):
         super(List, self).__init__()
-        self.__client = client_class()
+
+        if inspect.isclass(client_class):
+            self.__client = client_class()
+        elif isinstance(client_class, partial):
+            self.__client = client_class()
+        else:
+            self.__client = client_class
+
         self.__serializer = serializer_class
 
         iterable = iterable or []
@@ -76,7 +84,13 @@ class Deque(collections.abc.MutableSequence):
         client_class=None,
         serializer_class=None,
     ):
-        self.__client = client_class()
+        if inspect.isclass(client_class):
+            self.__client = client_class()
+        elif isinstance(client_class, partial):
+            self.__client = client_class()
+        else:
+            self.__client = client_class
+
         self.__serializer = serializer_class
         self.__max_length = maxlen
         self.extend(iterable)
