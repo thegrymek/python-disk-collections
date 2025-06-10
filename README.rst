@@ -69,11 +69,11 @@ There are available more ways to serialize items.
         JsonZLibSerializer  # convert to json + compress items
     )
     >>> from functools import partial
-    >>> JsonFileList = partial(List, serializer_class=JsonHandler)
+    >>> JsonFileList = partial(FileList, serializer_class=JsonSerializer)
     >>> flist = JsonFileList()
     >>> flist.append({'a': 1, 'b': 2, 'c': 3})
     >>> flist[0]
-    {u'a': 1, u'b': 2, u'c': 3}
+    {'a': 1, 'b': 2, 'c': 3}
 
 
 Installation
@@ -112,7 +112,7 @@ Exactly this object `{'a': 1, 'b': 2, 'c': 3}` will serialized and compressed an
 .. code-block:: python
 
     >>> flist[0]
-    {u'a': 1, u'b': 2, u'c': 3}
+    {'a': 1, 'b': 2, 'c': 3}
 
 Getting an item will read a file and because `JsonZLibSerializer` is used: then content will be decompressed and tried
 to loaded from json.
